@@ -15,6 +15,7 @@ class Platform(models.Model):
 
 class Console(models.Model):
     console_name = models.CharField(max_length=20, unique=True)
+    release_date = models.DateField()
     platform = models.ForeignKey(Platform, on_delete=models.CASCADE,related_name='consoles')
 
     def __str__(self):

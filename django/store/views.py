@@ -22,7 +22,7 @@ def platform_icons(request):
     return JsonResponse({'platforms': serializer.data})
 
 def consoles(request):
-    data = models.Console.objects.all()
+    data = models.Console.objects.all().order_by('-release_date')
     serializer = serializers.ConsoleSerializer(data, many=True)
     return JsonResponse({'consoles': serializer.data})
 
