@@ -1,4 +1,5 @@
 from django.db import models
+from django.conf import settings
 
 
 class Genre(models.Model):
@@ -34,3 +35,40 @@ class Game(models.Model):
     quantity_sold = models.IntegerField()
     def __str__(self):
         return self.title
+
+class Cart(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f'Carrinho de {self.user}'
+
+class CartItem(models.Model):
+    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
+    game_item = models.ForeignKey(Game, on_delete=models.CASCADE)
+    quantity = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.game_item} - {self.cart}'
+
+# class Order(models.Model):
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+#     order_number = models.IntegerField(null=False)
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     finished = models.BooleanField(default=False)
+#     status = models.CharField(max_length=20, default="Recebido")
+#
+#     def __str__(self):
+#         return f'Pedido {self.order_number} de: {self.user.name}'
+#
+# class OrderItem(models.Model):
+#     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+#     game = models.ForeignKey(Game, on_delete=models.CASCADE)
+#     quantity = models.IntegerField(default=1)
+#     price_at_purchase = models.DecimalField(max_digits=6, decimal_places=2)
+#
+#     def __str__(self):
+#         return f'{self.quantity}x {self.game.name} no Pedido #{self.order.order_number}'
+

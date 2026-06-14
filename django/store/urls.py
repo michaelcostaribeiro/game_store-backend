@@ -25,9 +25,12 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('admin/', admin.site.urls),
     path('api/store/', views.store, name='store'),
-    path('api/<str:platform_name>/', views.games_by_platform, name='games_by_platform'),
+    path('api/games_by_platform/<str:platform_name>/', views.games_by_platform, name='games_by_platform'),
     path('api/icons', views.platform_icons, name='icons'),
     path('api/consoles', views.consoles, name='consoles'),
     path('api/hightlightImage/<str:platform_name>/', views.hightlight_image_by_platform, name='hightlight_image_by_platform'),
     path('api/game/<int:id>/', views.game, name='game'),
+    path('api/register/', views.register, name='register'),
+    path('getCart/', views.cart, name='getCart'),
+    path('api/gameSearch/<str:query>/', views.gameSearch, name='gameSearch'),
 ]
