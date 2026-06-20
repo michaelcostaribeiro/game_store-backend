@@ -31,10 +31,21 @@ def consoles(request):
     serializer = serializers.ConsoleSerializer(data, many=True)
     return JsonResponse({'consoles': serializer.data})
 
+@api_view(['GET'])
 def game(request, id):
-    data = models.Game.objects.get(id=id)
-    serializer = serializers.GameSerializer(data)
-    return JsonResponse(serializer.data)
+    try:
+        data = models.Game.objects.get(id=id)
+        print(data)
+        serializer = serializers.GameSerializer(data)
+
+        if serializer:
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+    except :
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+
 
 @api_view(['POST'])
 def register(request):
