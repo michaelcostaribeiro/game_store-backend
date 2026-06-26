@@ -22,14 +22,6 @@ def games_by_platform(request, platform_name):
     serializer = serializers.GameSerializer(data, many=True)
     return JsonResponse({'games': serializer.data})
 
-# @api_view(['GET'])
-# def devices(request):
-#     try:
-#         device_types = models.DeviceType.objects.prefetch_related('device_set').all()
-#         serializer = serializers.DeviceTypeSerializer(device_types, many=True)
-#         return Response({'devices': serializer.data}, status=status.HTTP_200_OK)
-#     except :
-#         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 def hightlight_image_by_platform(request, platform_name):
     data = models.Platform.objects.filter(platform_name__iexact=platform_name).first()
@@ -105,11 +97,6 @@ def manage_cart_items(request):
         except:
             return Response(status=status.HTTP_400_BAD_REQUEST)
 
-        # class CartItem(models.Model):
-        #     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
-        #     game_item = models.ForeignKey(Game, on_delete=models.CASCADE, null=True, blank=True)
-        #     device_item = models.ForeignKey(Device, on_delete=models.CASCADE, null=True, blank=True)
-        #     quantity = models.IntegerField()
 
 
 @api_view(['GET'])
