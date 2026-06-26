@@ -22,6 +22,18 @@ class GameSerializer(serializers.ModelSerializer):
         model = Game
         fields = '__all__'
 
+
+# class DeviceSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Device
+#         fields = '__all__'
+#
+# class DeviceTypeSerializer(serializers.ModelSerializer):
+#     devices = DeviceSerializer(source='device_set', many=True, read_only=True)
+#     class Meta:
+#         model = DeviceType
+#         fields = ['id', 'type_name', 'devices']
+
 class PlatformSerializer(serializers.ModelSerializer):
     class Meta:
         model = Platform
@@ -61,6 +73,8 @@ class CartSerializer(serializers.ModelSerializer):
 
 class CartItemSerializer(serializers.ModelSerializer):
     game_item = GameSerializer(read_only=True)
+    # device_item = DeviceSerializer(read_only=True)
     class Meta:
         model = CartItem
         fields = '__all__'
+        read_only_fields = ['cart']

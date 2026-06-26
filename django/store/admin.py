@@ -3,6 +3,8 @@ from . import models
 
 admin.site.register(models.Game)
 admin.site.register(models.Genre)
+# admin.site.register(models.Device)
+# admin.site.register(models.DeviceType)
 admin.site.register(models.Platform)
 admin.site.register(models.Console)
 admin.site.register(models.Cart)
