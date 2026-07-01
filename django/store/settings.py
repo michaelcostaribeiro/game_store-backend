@@ -1,18 +1,23 @@
 from datetime import timedelta
 from pathlib import Path
+import os
+from dotenv import load_dotenv
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-MERCADO_PAGO_ACCESS_TOKEN = 'APP_USR-900658587683975-062114-aa26651a69f5337303ea8f3e06aacdcb-3248169474'
-MERCADO_PAGO_PUBLIC_KEY = "APP_USR-a05e287d-99e8-46d4-b5d8-9b2461d646b7"
+load_dotenv()
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-x1dji7wo#%f%x@3yrkdbuz22+(@8-mj#h*invc*a5866+q!gg@'
+MERCADO_PAGO_ACCESS_TOKEN = os.getenv('MERCADO_PAGO_ACCESS_TOKEN')
+MERCADO_PAGO_PUBLIC_KEY = os.getenv('MERCADO_PAGO_PUBLIC_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
+SECRET_KEY = os.getenv('SECRET_KEY')
+
+
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1','.ngrok-free.app']
+ALLOWED_HOSTS = [*os.getenv('ALLOWED_HOSTS').split(',')]
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
@@ -52,8 +57,7 @@ MIDDLEWARE = [
 ]
 
 CORS_ALLOWED_ORIGINS = [
-    'http://localhost:5173',
-    'https://grid-eldest-fester.ngrok-free.dev'
+    os.getenv('CORS_ALLOWED_ORIGINS')
 ]
 
 ROOT_URLCONF = 'store.urls'
