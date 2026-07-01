@@ -2,7 +2,7 @@ from datetime import timedelta
 from pathlib import Path
 import os
 from dotenv import load_dotenv
-
+import dj_database_url
 
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -114,3 +114,6 @@ USE_I18N = True
 USE_TZ = True
 
 STATIC_URL = 'static/'
+
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config(conn_max_age=500,conn_health_checks=True,)
