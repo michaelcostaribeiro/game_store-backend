@@ -15,6 +15,7 @@ from .serializers import CartItemSerializer
 def store(request):
     data = models.Game.objects.all()
     serializer = serializers.GameSerializer(data, many=True)
+    
     return JsonResponse({'games': serializer.data})
 
 def games_by_platform(request, platform_name):
@@ -102,16 +103,11 @@ def manage_cart_items(request):
 @api_view(['GET'])
 def gameSearch(request,query):
     try:
-        filtered_games = []
+        filtered_games = models.Game.objects.filter(title__icontains=query)
 
-        for game in models.Game.objects.all():
-            if query.lower() in game.title.lower():
-                filtered_games.append(game)
-
-        serializer = serializers.GameSerializer(filtered_games, many=True)
-
-        if filtered_games:
-            return Response(serializer.data, status=status.HTTP_200_OK)
+        if filtered_games.exists():
+            serializer = serializers.GameSerializer(filtered_games, many=True)
+            return Response({"games": serializer.data}, status=status.HTTP_200_OK)
         else:
             return Response(status=status.HTTP_404_NOT_FOUND)
     except:
