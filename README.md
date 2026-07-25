@@ -45,6 +45,13 @@ python -m venv .venv
 .venv\scripts\activate.bat
 pip install -r requirements.txt
 ```
+### Installing the Dependencies (Linux / macOS)
+```bash
+cd game_store-backend
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
 
 <h3>Starting</h3>
 
