@@ -1,4 +1,4 @@
-<h1 align="center" style="font-weight: bold;">Neo Gaming (Backend) 🕹️</h1>
+<h1 align="center" style="font-weight: bold;">Neo Gaming (Backend) 🎮</h1>
 
 <p align="center">
  <a href="#tech">Technologies</a> • 
@@ -18,10 +18,9 @@
 
 <h2 id="features">✨ Features</h2>
 
-- 🕹️ **RESTful API Endpoints** serving games information, price and selling service.
-- 👤 **Secure User Authentication** managing login, registration, and token/session validation for the Neo Gaming front-end.
-- 🧩 **Django Admin Dashboard** pre-configured for administrators to easily create, edit, delete, and manage games.
-- 🗄️ **Data Management** structured database models optimized for storing games, user and sales information.
+- 👩‍🍳 **RESTful API Endpoints** serving games information, price and selling service.
+- 🔐 **Secure User Authentication** managing login, registration, and token/session validation for the Neo Gaming front-end.
+- 📊 **Data Management** structured database models optimized for storing games, user and sales information.
 
 <h2 id="started">🚀 Getting Started</h2>
 
@@ -40,20 +39,11 @@ Make sure you have installed:
 git clone https://github.com/michaelcostaribeiro/game_store-backend.git
 ```
 ### Installing the Dependencies (Windows)
-```
+```bash
 cd game_store-backend
-```
-```
 python -m venv .venv
-```
-```
 .venv\scripts\activate.bat
-```
-```
 pip install -r requirements.txt
-```
-```
-
 ```
 
 <h3>Starting</h3>
@@ -61,7 +51,13 @@ pip install -r requirements.txt
 How to start the project
 
 ```bash
-cd game_store-backend
+# Apply database migrations
+python manage.py migrate
+
+# Create a superuser for the Admin Dashboard (optional)
+python manage.py createsuperuser
+
+# Start the server
 python manage.py runserver
 ```
 
