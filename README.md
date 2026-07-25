@@ -9,13 +9,6 @@
     <b>API service for Neo Gaming front-end.</b>
 </p>
 
-<h2 id="layout">🎨 Layout</h2>
-
-<p align="center">
-    <img src="./github/neetflixHomePage.jpg" alt="Image Example" width="40%">
-    <img src="./github/neetflixVideos.jpg" alt="Image Example" width="40%">
-</p>
-
 
 <h2 id="technologies">💻 Technologies</h2>
 
@@ -38,7 +31,7 @@ Follow the steps below to run the project locally.
 
 Make sure you have installed:
 
-- [Node.js](https://nodejs.org/)
+- [Python](https://www.python.org/)
 - [Git](https://git-scm.com/)
 
 ### Cloning
@@ -46,14 +39,30 @@ Make sure you have installed:
 ```bash
 git clone https://github.com/michaelcostaribeiro/game_store-backend.git
 ```
+### Installing the Dependencies (Windows)
+```
+cd game_store-backend
+```
+```
+python -m venv .venv
+```
+```
+.venv\scripts\activate.bat
+```
+```
+pip install -r requirements.txt
+```
+```
+
+```
 
 <h3>Starting</h3>
 
 How to start the project
 
 ```bash
-cd neetflix
-npm run dev
+cd game_store-backend
+python manage.py runserver
 ```
 
 <h2>📄 License</h2>
