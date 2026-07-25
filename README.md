@@ -32,6 +32,7 @@ Make sure you have installed:
 
 - [Python](https://www.python.org/)
 - [Git](https://git-scm.com/)
+- ![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
 
 ### Cloning
 
@@ -45,6 +46,7 @@ python -m venv .venv
 .venv\scripts\activate.bat
 pip install -r requirements.txt
 ```
+
 ### Installing the Dependencies (Linux / macOS)
 ```bash
 cd game_store-backend
@@ -52,7 +54,22 @@ python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
-
+### Create an environment file (.env) with the following information:
+```
+# Adapt the information as you need
+MERCADO_PAGO_ACCESS_TOKEN=APP_USR-123
+MERCADO_PAGO_PUBLIC_KEY=APP_USR-321
+SECRET_KEY=safekey
+ALLOWED_HOSTS=localhost,127.0.0.1
+CORS_ALLOWED_ORIGINS(http://localhost:5173
+POSTGRES_PASSWORD=postgres
+POSTGRES_USER=postgres
+```
+### Creating a database on Postgres
+```
+# Run this command on SQL shell after logging in Postgres:
+CREATE DATABASE game_store;
+```
 <h3>Starting</h3>
 
 How to start the project
