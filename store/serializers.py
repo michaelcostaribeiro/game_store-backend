@@ -23,17 +23,6 @@ class GameSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-# class DeviceSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model = Device
-#         fields = '__all__'
-#
-# class DeviceTypeSerializer(serializers.ModelSerializer):
-#     devices = DeviceSerializer(source='device_set', many=True, read_only=True)
-#     class Meta:
-#         model = DeviceType
-#         fields = ['id', 'type_name', 'devices']
-
 class PlatformSerializer(serializers.ModelSerializer):
     class Meta:
         model = Platform
@@ -73,9 +62,7 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
-    # This field handles the incoming ID
     game_item_id = serializers.IntegerField(write_only=True, required=False)
-    # This field handles the output (the full object)
     game_item = GameSerializer(read_only=True)
 
     class Meta:
@@ -84,14 +71,6 @@ class CartItemSerializer(serializers.ModelSerializer):
         read_only_fields = ['cart']
 
     def create(self, validated_data):
-        print("--- DEBUG START ---")
-        print("Validated Data:", validated_data)
-
-        # Extract the ID
         game_id = validated_data.pop('game_item_id', None)
-        print("Extracted Game ID:", game_id)
-
         instance = CartItem.objects.create(game_item_id=game_id, **validated_data)
-        print("Instance saved with game_item_id:", instance.game_item_id)
-
         return instance

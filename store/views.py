@@ -86,17 +86,23 @@ def cart(request):
 @permission_classes([IsAuthenticated])
 def manage_cart_items(request):
     if request.method == 'POST':
-        try:
-            user_cart = models.Cart.objects.get(user=request.user)
-            serializer = CartItemSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.save(cart=user_cart)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            else:
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        except:
-            return Response(status=status.HTTP_400_BAD_REQUEST)
+        user_cart = models.Cart.objects.get(user=request.user)
+        user_cart_items = list(user_cart.items.all())
+
+        requested_game_id = request.data.get('game_item_id')
+
+        for item in user_cart_items:
+            if requested_game_id == item.game_item.id:
+                return Response({"detail": "O carrinho do usuário ja possui este item!"},
+                                 status=status.HTTP_403_FORBIDDEN)
+
+        serializer = CartItemSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        serializer.save(cart=user_cart)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 
