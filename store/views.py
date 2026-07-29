@@ -82,14 +82,13 @@ def cart(request):
     except:
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['POST'])
+@api_view(['POST','DELETE'])
 @permission_classes([IsAuthenticated])
-def manage_cart_items(request):
+def manage_cart_items(request,item_id=None):
+    user_cart = models.Cart.objects.get(user=request.user)
+    user_cart_items = list(user_cart.items.all())
+
     if request.method == 'POST':
-
-        user_cart = models.Cart.objects.get(user=request.user)
-        user_cart_items = list(user_cart.items.all())
-
         requested_game_id = request.data.get('game_item_id')
 
         for item in user_cart_items:
@@ -103,6 +102,13 @@ def manage_cart_items(request):
 
         serializer.save(cart=user_cart)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    elif request.method == 'DELETE':
+        game_searched = models.Game.objects.get(id=item_id)
+        for item in user_cart_items:
+            if item.game_item.id == game_searched.id:
+                item.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
 
 
 
