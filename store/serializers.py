@@ -9,6 +9,13 @@ def slug_field_factory(slug_field,many=True):
         slug_field=slug_field
     )
 
+def slug_with_queryset_factory(model,slug_field,many=True):
+    return serializers.SlugRelatedField(
+        many=many,
+        slug_field=slug_field,
+        queryset=model.objects.all()
+    )
+
 slug_platforms = slug_field_factory('platform_name')
 slug_genres = slug_field_factory('genre_name')
 slug_consoles = slug_field_factory('console_name')
@@ -21,6 +28,23 @@ class GameSerializer(serializers.ModelSerializer):
     class Meta:
         model = Game
         fields = '__all__'
+
+class GameWriteSerializer(serializers.ModelSerializer):
+    genres = slug_with_queryset_factory(Genre, 'genre_name')
+    consoles = slug_with_queryset_factory(Console, 'console_name')
+    platforms = slug_with_queryset_factory(Platform, 'platform_name')
+    class Meta:
+        model = Game
+        fields = '__all__'
+
+class GameModelsSerializer(serializers.ModelSerializer):
+    genres = slug_genres
+    platforms = slug_platforms
+    consoles = slug_consoles
+
+    class Meta:
+        model = Game
+        fields = ['genres', 'platforms', 'consoles']
 
 
 class PlatformSerializer(serializers.ModelSerializer):

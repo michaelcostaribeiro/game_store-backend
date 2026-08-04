@@ -9,6 +9,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.conf import settings
 import mercadopago
 
+from .permissions import IsAdminOrReadOnly
 from .serializers import CartItemSerializer
 
 
@@ -39,18 +40,49 @@ def consoles(request):
     serializer = serializers.ConsoleSerializer(data, many=True)
     return JsonResponse({'consoles': serializer.data})
 
-@api_view(['GET'])
-def game(request, id):
-    try:
-        data = models.Game.objects.get(id=id)
-        serializer = serializers.GameSerializer(data)
+@api_view(['GET','POST','PATCH'])
+@permission_classes([IsAdminOrReadOnly])
+def game(request, id=None):
+    if id:
+        game_instance = models.Game.objects.get(id=id)
+    if request.method == 'GET':
+        try:
+            serializer = serializers.GameSerializer(game_instance)
 
-        if serializer:
+            if serializer:
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            else:
+                return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        except :
+            return Response(status=status.HTTP_404_NOT_FOUND)
+    elif request.method == 'POST':
+        serializer = serializers.GameWriteSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'PATCH':
+        serializer = serializers.GameWriteSerializer(game_instance,
+                                                     data=request.data,
+                                                     partial=True)
+        if serializer.is_valid():
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-    except :
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+def games_model(request):
+    genres = models.Genre.objects.values_list('genre_name', flat=True).distinct()
+    platforms = models.Platform.objects.values_list('platform_name', flat=True).distinct()
+    consoles = models.Console.objects.values_list('console_name', flat=True).distinct()
+
+    return Response({
+        "genres": list(genres),
+        "platforms": list(platforms),
+        "consoles": list(consoles)
+    }, status=status.HTTP_200_OK)
 
 
 
@@ -66,6 +98,12 @@ def register(request):
         }
         return Response(tokens,status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def isAdmin(request):
+    user = request.user
+    return Response({"is_admin": user.is_staff or user.is_superuser},status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def cart(request):
