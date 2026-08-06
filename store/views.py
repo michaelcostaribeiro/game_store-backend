@@ -40,7 +40,7 @@ def consoles(request):
     serializer = serializers.ConsoleSerializer(data, many=True)
     return JsonResponse({'consoles': serializer.data})
 
-@api_view(['GET','POST','PATCH'])
+@api_view(['GET','POST','PATCH', 'DELETE'])
 @permission_classes([IsAdminOrReadOnly])
 def game(request, id=None):
     if id:
@@ -70,6 +70,9 @@ def game(request, id=None):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    elif request.method == 'DELETE':
+        game_instance.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 @api_view(['GET'])
